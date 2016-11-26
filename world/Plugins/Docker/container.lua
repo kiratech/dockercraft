@@ -182,6 +182,10 @@ function Container:display(running)
 
 	-- CPU sign
 	setBlock(UpdateQueue,self.x+1,GROUND_LEVEL + 2,self.z - 1,E_BLOCK_WALLSIGN,E_META_CHEST_FACING_ZM)
+
+	-- Kiratech sign
+	setBlock(UpdateQueue,self.x,GROUND_LEVEL + 3,self.z - 1,E_BLOCK_WALLSIGN,E_META_CHEST_FACING_ZM)
+	updateSign(UpdateQueue,self.x,GROUND_LEVEL + 3,self.z - 1,"Kiratech", "", "", "")
 end
 
 

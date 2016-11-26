@@ -16,6 +16,37 @@ EmptyContainerSpace = {}
 -- FUNCTIONS
 ----------------------------------------
 
+-- Little helper function to draw a letter in the sky
+function drawLetter(mt, offset)
+for i=1,5 do
+    for j=1,3 do
+      if mt[i][j]==1 then
+        x=i
+        z=j+offset
+        for pieceX=x, x+0.5
+        do
+          for pieceZ=z, z+0.5
+          do
+            setBlock(UpdateQueue, pieceX, GROUND_LEVEL + 20, pieceZ, E_BLOCK_WOOL, E_META_WOOL_RED)
+          end
+        end
+      end
+    end
+  end
+end
+
+-- Draw kiratech in the sky
+function drawKiratech()
+  drawLetter({{1,0,1}, {1,1,0}, {1,0,0}, {1,1,0}, {1,0,1}}, 1)
+  drawLetter({{0,1,0}, {0,1,0}, {0,1,0}, {0,1,0}, {0,1,0}}, 4)
+  drawLetter({{1,1,1}, {1,0,1}, {1,1,1}, {1,1,0}, {1,0,1}}, 7)
+  drawLetter({{1,1,1}, {1,0,1}, {1,1,1}, {1,0,1}, {1,0,1}}, 11)
+  drawLetter({{1,1,1}, {0,1,0}, {0,1,0}, {0,1,0}, {0,1,0}}, 15)
+  drawLetter({{1,1,1}, {1,0,0}, {1,1,1}, {1,0,0}, {1,1,1}}, 19)
+  drawLetter({{1,1,1}, {1,0,0}, {1,0,0}, {1,0,0}, {1,1,1}}, 23)
+  drawLetter({{1,0,1}, {1,0,1}, {1,1,1}, {1,0,1}, {1,0,1}}, 27)
+end
+
 -- Tick is triggered by cPluginManager.HOOK_TICK
 function Tick(TimeDelta)
 	UpdateQueue:update(MAX_BLOCK_UPDATE_PER_TICK)
@@ -47,7 +78,12 @@ function Initialize(Plugin)
 	-- make all players admin
 	cRankManager:SetDefaultRank("Admin")
 
-	cNetwork:Connect("127.0.0.1",25566,TCP_CLIENT)
+  -- draw kiratech
+  
+  drawKiratech()
+
+  -- network connect
+  cNetwork:Connect("127.0.0.1",25566,TCP_CLIENT)
 
 	LOG("Initialised " .. Plugin:GetName() .. " v." .. Plugin:GetVersion())
 
@@ -266,7 +302,7 @@ function DockerCommand(Split, Player)
 		then
 			if table.getn(Split) > 1
 			then
-				if Split[2] == "pull" or Split[2] == "create" or Split[2] == "run" or Split[2] == "stop" or Split[2] == "rm" or Split[2] == "rmi" or Split[2] == "start" or Split[2] == "kill"
+				if Split[2] == "pull" or Split[2] == "create" or Split[2] == "run" or Split[2] == "stop" or Split[2] == "rm" or Split[2] == "rmi" or Split[2] == "start" or Split[2] == "kill" or Split[2] == "service"
 				then
 					-- force detach when running a container
 					if Split[2] == "run"
