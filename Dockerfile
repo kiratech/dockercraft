@@ -23,6 +23,7 @@ WORKDIR /srv
 COPY ./world world
 COPY ./docs/img/logo64x64.png logo.png
 
+COPY partecipants.txt /partecipants.txt
 EXPOSE 25565
 
 COPY ./start.sh start.sh

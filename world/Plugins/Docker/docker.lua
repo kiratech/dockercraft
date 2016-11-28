@@ -48,12 +48,15 @@ function Initialize(Plugin)
 	-- make all players admin
 	cRankManager:SetDefaultRank("Admin")
 
-  -- draw kiratech
-  
-  drawKiratech()
+	-- draw kiratech in the sky
+	drawKiratech()
 
-  -- network connect
-  cNetwork:Connect("127.0.0.1",25566,TCP_CLIENT)
+	-- make and draw the raffle house
+	raf = NewRaffle(7, 5)
+	raf:display()
+
+	-- network connect
+	cNetwork:Connect("127.0.0.1",25566,TCP_CLIENT)
 
 	LOG("Initialised " .. Plugin:GetName() .. " v." .. Plugin:GetVersion())
 
@@ -247,6 +250,15 @@ function PlayerUsingBlock(Player, BlockX, BlockY, BlockZ, BlockFace, CursorX, Cu
 			Player:SendMessage("docker rm " .. string.sub(containerID,1,8))
 			SendTCPMessage("docker",{"rm",containerID},0)
 		end
+	end
+
+	-- wooden button
+	if BlockType == 143
+	then
+		local winner = RaffleChooseWinner()
+		Player:SendMessage("Choosing the winner")
+		Player:SendMessage("The winner is " .. winner)
+		LOG("A winner was: " .. winner)
 	end
 end
 
